@@ -1,28 +1,45 @@
-Running the application
+Step - 1
 -------------
 
-Running the application requires you to have NodeJS and bower installed.
+Inbefore errors...
+`$ npm install grunt-karma --save-dev`
 
-Download and install nodejs from `http://nodejs.org/download/`
+### Installing ui-router
 
-Installing yeoman: `$ npm install -g yo`
+`$ bower install angular-ui-router --save`
 
-## Step - 0
+`$ yo angular:controller about`
+`$ yo angular:view about`
 
-### Generate angular project
+`$ yo angular:controller contact`
+`$ yo angular:view contact`
 
-`$ yo angular angulearn`
+### setting up stuff
 
-* we don't want Compass
-* we want Bootstrap this time
-* we don't want angular-route, neither angular-touch
+* add baseHref, and explain
+* add ui-sref to links (point out that links won't show active state at all)
+* skipp title bind
+* add ui routing without data {} (3 states, Home link should become active now)
+* explain html5mode
+* default route fallback at the end
+* swap out ng-include to ui-view
 
-Brace yourselves, errors are coming!
+### modrewrite
 
-### Running the app
+* tell them to click on about, and refresh the page
+* point out the need to update the Gruntfile.js configs, and pull needed dependency
+* `$ npm install connect-modrewrite`
+* edit Gruntfile.js:
 
-`$ grunt serve`
+```
+var modRewrite = require('connect-modrewrite');
 
-If it won't be able to find local grunt, run: `$ npm install`
+[...]
 
-Yayy we won!
+// connect > livereload > middleware
+modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
+```
+
+Restart the server: `$ grunt serve`
+
+State preservation should now work with livereload
