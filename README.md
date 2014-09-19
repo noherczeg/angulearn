@@ -1,45 +1,38 @@
-Step - 1
+Step - 2
 -------------
 
-Inbefore errors...
-`$ npm install grunt-karma --save-dev`
+### On state
 
-### Installing ui-router
+* add `ng-bind="pageTitle"` to the title tag
+* add .run config for title in app.js (mention minifyability with dependency injection)
+* title won't change > move ng-app to the html tag :)
 
-`$ bower install angular-ui-router --save`
+### i18n
+* `$ bower install angular-i18n --save`
+* `$ bower install angular-translate --save`
+* `$ bower install angular-translate-loader-static-files --save`
+* add 'pascalprecht.translate' to angulearn.module
+* copy translateProvider config
+* mkdir 'languages'
+* copy lang files into it
+* put goat into main html somewhere with translate from scope value
+* put translate switch buttons to bottom frame
+* put change method to app.js > run
+* translate top buttons as well
 
-`$ yo angular:controller about`
-`$ yo angular:view about`
+Notice that translation works, but after refresh it resets
 
-`$ yo angular:controller contact`
-`$ yo angular:view contact`
+* add loading mechanism from cookieStore to app.js's run ($cookieStore dep)
+* update changeLanguage to update cookie, rootScope value, keep instant reload
 
-### setting up stuff
+### Lists and filters
 
-* add baseHref, and explain
-* add ui-sref to links (point out that links won't show active state at all)
-* skipp title bind
-* add ui routing without data {} (3 states, Home link should become active now)
-* explain html5mode
-* default route fallback at the end
-* swap out ng-include to ui-view
+* create: `repository/contacts.json`
+* fill it with data: { firstName, lastName, email, regDate }
+* `$ yo angular:service contacts`
+* write getAll
+* inject into contacts controller, assign scope value from promise
+* create a table with ng-repeat in the contacts partial
+* add some filters e.g. date
 
-### modrewrite
-
-* tell them to click on about, and refresh the page
-* point out the need to update the Gruntfile.js configs, and pull needed dependency
-* `$ npm install connect-modrewrite`
-* edit Gruntfile.js:
-
-```
-var modRewrite = require('connect-modrewrite');
-
-[...]
-
-// connect > livereload > middleware
-modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
-```
-
-Restart the server: `$ grunt serve`
-
-State preservation should now work with livereload
+And we're done! :)

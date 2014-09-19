@@ -13,7 +13,8 @@ var angulearn = angular.module('angulearnApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
-	'ui.router'
+	'ui.router',
+	'pascalprecht.translate'
   ]);
 
 angulearn.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -25,7 +26,7 @@ angulearn.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', 
             controller: 'MainCtrl',
 			templateUrl: '/views/main.html',
             data: {
-                pageTitle: 'Home'
+                pageTitle: 'home'
             }
         })
         .state('about', {
@@ -33,7 +34,7 @@ angulearn.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', 
             controller: 'AboutCtrl',
             templateUrl: '/views/about.html',
             data: {
-                pageTitle: 'About'
+                pageTitle: 'about'
             }
         })
         .state('contact', {
@@ -41,10 +42,48 @@ angulearn.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', 
             controller: 'ContactCtrl',
             templateUrl: '/views/contact.html',
             data: {
-                pageTitle: 'Contact'
+                pageTitle: 'contact'
             }
         });
 
     $urlRouterProvider.otherwise('/');
 
-}]); 
+}]);
+
+angulearn.config(['$translateProvider', function ($translateProvider) {
+    $translateProvider.useStaticFilesLoader({
+        prefix: '/languages/',
+        suffix: '.json'
+	});
+    $translateProvider.preferredLanguage('en_US');
+    $translateProvider.fallbackLanguage('hu_HU');
+}]);
+
+// .run is called in the bootstrap process
+angulearn.run(['$rootScope', '$state', '$translate', '$cookieStore', function ( $rootScope, $state, $translate, $cookieStore ) {
+	
+	var lang = $cookieStore.get('ui-language');
+	var defaultLanguage = 'hu_HU';
+	if (!lang) {
+		$rootScope.uiLanguage = defaultLanguage;
+		$cookieStore.put(defaultLanguage);
+	} else {
+		$rootScope.uiLanguage = lang;
+	}
+	$translate.use($rootScope.uiLanguage);
+	
+	// state check workaround
+	$rootScope.$state = $state;
+	
+	$rootScope.changeLanguage = function (langKey) {
+		$rootScope.uiLanguage = langKey;
+        $cookieStore.put('ui-language', langKey);
+        $translate.use(langKey);
+    };
+	
+	$rootScope.$on('$stateChangeSuccess', function(event, toState){
+		if ( angular.isDefined( toState.data.pageTitle ) ) {
+			$rootScope.pageTitle = $translate.instant(toState.data.pageTitle) + ' | Angulearn' ;
+		}
+	});
+}]);

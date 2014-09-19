@@ -1,0 +1,20 @@
+[
+	{
+		"firstName":"John",
+		"lastName":"Doe",
+		"email":"asd@qweqwewqe.er",
+		"regDate":"2014-07-07"
+	},
+	{
+		"firstName":"Eric",
+		"lastName":"Whoever",
+		"email":"datman@imbah.net",
+		"regDate":"2011-06-12"
+	},
+	{
+		"firstName":"Some",
+		"lastName":"Dude",
+		"email":"imhereaswell@home.com",
+		"regDate":"2005-01-27"
+	}
+]

@@ -8,10 +8,13 @@
  * Controller of the angulearnApp
  */
 angular.module('angulearnApp')
-  .controller('ContactCtrl', function ($scope) {
+  .controller('ContactCtrl', ['$scope', 'Contacts', function ($scope, Contacts) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-  });
+	Contacts.getAll().success(function(data) {
+		$scope.contacts = data;
+	});
+  }]);

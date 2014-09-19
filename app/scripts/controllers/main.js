@@ -14,4 +14,5 @@ angular.module('angulearnApp')
       'AngularJS',
       'Karma'
     ];
+	$scope.translateTestKey = 'goat';
   });
